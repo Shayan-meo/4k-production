@@ -1,0 +1,243 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------- *
+ * 4K Production — Global tokens & editorial base layer
+ * ---------------------------------------------------------- */
+
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f9f9f9;
+  --ink: #111111;
+  --ink-soft: #4a4a4a;
+  --gold: #d4af37;
+  --line: rgba(17, 17, 17, 0.08);
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 15px;
+  line-height: 1.65;
+  letter-spacing: 0.005em;
+}
+
+::selection {
+  background: rgba(212, 175, 55, 0.28);
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------- *
+ * Universal focus-visible — visible on every interactive element
+ * Subtle, on-brand gold ring with offset. Never on :focus alone
+ * (mouse users) — only on keyboard/AT focus.
+ * ---------------------------------------------------------- */
+*:focus {
+  outline: none;
+}
+*:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+/* Rounded controls — match the offset so the ring follows the pill */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+[role="tab"]:focus-visible,
+summary:focus-visible {
+  border-radius: 9999px;
+}
+/* Form fields — square ring keyed to charcoal for contrast */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Interactive elements get a manipulation hint */
+a,
+button,
+[role="button"],
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+/* Tabular numerals for stat columns */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Editorial container */
+.container-luxe {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  max-width: 88rem;
+}
+@media (min-width: 640px) {
+  .container-luxe {
+    padding-inline: 2rem;
+  }
+}
+@media (min-width: 1024px) {
+  .container-luxe {
+    padding-inline: 3.5rem;
+  }
+}
+
+/* Small caps eyebrow */
+.eyebrow {
+  font-family: var(--font-inter), Inter, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.eyebrow--muted {
+  color: var(--ink-soft);
+}
+
+/* Gold underline accent */
+.rule-gold {
+  display: inline-block;
+  width: 3rem;
+  height: 1px;
+  background: var(--gold);
+  vertical-align: middle;
+}
+
+/* Hairline divider */
+.hairline {
+  height: 1px;
+  width: 100%;
+  background: var(--line);
+}
+
+/* Skip link — visible on focus only */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  transform: translateY(-150%);
+  background: var(--ink);
+  color: #fff;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  border-radius: 9999px;
+  transition: transform 200ms ease-out;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Modal scroll containment */
+.modal-scroll {
+  overscroll-behavior: contain;
+}
+
+/* Text balance — keeps editorial headings tidy */
+.text-balance {
+  text-wrap: balance;
+}
+
+/* ---------------------------------------------------------- *
+ * Scroll reveal — used by <Reveal /> wrapper
+ * Default state hides; .is-visible (toggled by IO) settles in.
+ * ---------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal--fade {
+  transform: none;
+}
+
+/* Soft image zoom on scroll — paired with <Reveal as="div"> on image wrappers */
+.reveal-zoom > img,
+.reveal-zoom > picture > img {
+  transform: scale(1.04);
+  transition: transform 1600ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.reveal-zoom.is-visible > img,
+.reveal-zoom.is-visible > picture > img {
+  transform: scale(1);
+}
+
+/* Hide scrollbar utility for slide-out */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ---------------------------------------------------------- *
+ * Reduced motion — absolute kill switch for all animation,
+ * transition, and smooth scrolling. Snaps every reveal/zoom
+ * helper into its final state instantly.
+ * ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition: none !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Snap entry animations into final state */
+  .animate-fade-up,
+  .animate-fade-in,
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .reveal-zoom > img,
+  .reveal-zoom > picture > img {
+    transform: none !important;
+  }
+}
