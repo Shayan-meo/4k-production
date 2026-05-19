@@ -14,6 +14,7 @@ Editorial-grade single-page website for a premium cinematic wedding-film brand. 
 ```bash
 npm install
 npm run dev
+
 ```
 
 Open <http://localhost:3000>.
